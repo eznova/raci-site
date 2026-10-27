@@ -1,7 +1,7 @@
 name: raci-site
 
 services:
-  nginx:
+  raci-site:
     image: nginx:stable-alpine
     restart: unless-stopped
     ports:
