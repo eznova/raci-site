@@ -1,24 +1,13 @@
-name: raci-site
-
 services:
   raci-site:
     image: nginx:stable-alpine
+    container_name: raci-site
     restart: unless-stopped
     ports:
       - "8064:80"
     volumes:
-      - type: bind
-        source: ./site
-        target: /var/www/html
-        read_only: true
-        bind:
-          create_host_path: false
-      - type: bind
-        source: ./nginx
-        target: /etc/nginx/conf.d
-        read_only: true
-        bind:
-          create_host_path: false
+      - ./site:/var/www/html:ro
+      - ./nginx:/etc/nginx/conf.d:ro
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
       interval: 30s
@@ -30,3 +19,10 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+    networks:
+      - moc
+
+
+networks:
+  moc:
+    external: true
