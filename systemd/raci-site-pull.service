@@ -1,0 +1,20 @@
+[Unit]
+Description=Update RACI site from its Git upstream
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=raci-deploy
+Group=raci-deploy
+WorkingDirectory=/opt/raci-site
+Environment=GIT_TERMINAL_PROMPT=0
+Environment="GIT_SSH_COMMAND=/usr/bin/ssh -o BatchMode=yes -o ConnectTimeout=10"
+ExecStart=/usr/bin/git pull --ff-only --no-rebase --no-recurse-submodules
+TimeoutStartSec=25s
+UMask=0022
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/raci-site

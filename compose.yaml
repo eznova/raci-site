@@ -1,0 +1,32 @@
+name: raci-site
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    restart: unless-stopped
+    ports:
+      - "8064:80"
+    volumes:
+      - type: bind
+        source: ./site
+        target: /var/www/html
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./nginx
+        target: /etc/nginx/conf.d
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

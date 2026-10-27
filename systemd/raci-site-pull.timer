@@ -1,0 +1,12 @@
+[Unit]
+Description=Check RACI site Git updates every 30 seconds
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=1s
+RandomizedDelaySec=0
+Unit=raci-site-pull.service
+
+[Install]
+WantedBy=timers.target
